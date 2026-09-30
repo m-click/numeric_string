@@ -12,7 +12,6 @@ module T = struct
       if i = String.length t || not (f t.[i]) then i else count t f (i + 1)
     in
     count t f from - from
-  ;;
 
   let count_zeroes t ~from = count_chars t ~from ~f:(fun c -> Char.equal c '0')
   let count_digits t ~from = count_chars t ~from ~f:Char.is_digit
@@ -24,7 +23,6 @@ module T = struct
       match Char.compare t1.[start1] t2.[start2] with
       | 0 -> compare_substring t1 (start1 + 1) t2 (start2 + 1) ~len:(len - 1)
       | other -> other)
-  ;;
 
   let compare_numbers t1 t2 ~from ~skip_leading_zeros =
     let t1_leading_zeroes = if skip_leading_zeros then count_zeroes t1 ~from else 0 in
@@ -45,7 +43,6 @@ module T = struct
        | 0 -> Int.compare t1_leading_zeroes t2_leading_zeroes
        | result -> result)
     | result -> result
-  ;;
 
   let%template[@mode m = (local, global)] compare t1 t2 =
     let rec loop t1 t2 i ~previous_chunk_type =
@@ -92,7 +89,6 @@ module T = struct
     (* the choice to start each string with a possibly-empty non-numeric component is what
        makes the right [previous_chunk_type] here be [`Not_a_number]. *)
     loop t1 t2 0 ~previous_chunk_type:`Not_a_number
-  ;;
 end
 
 include T
