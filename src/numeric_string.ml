@@ -1,5 +1,3 @@
-open Base
-
 module T = struct
   type t = string [@@deriving sexp]
 
@@ -15,7 +13,7 @@ module T = struct
   ;;
 
   let count_zeroes t ~from = count_chars t ~from ~f:(fun c -> Char.equal c '0')
-  let count_digits t ~from = count_chars t ~from ~f:Char.is_digit
+  let count_digits t ~from = count_chars t ~from ~f:Char.Ascii.is_digit
 
   let rec compare_substring t1 start1 t2 start2 ~len =
     if len <= 0
@@ -58,9 +56,9 @@ module T = struct
         match Char.compare c1 c2 with
         | 0 ->
           let this_chunk_type =
-            if not (Char.is_digit c1)
+            if not (Char.Ascii.is_digit c1)
             then `Not_a_number
-            else if Char.(c1 = '0')
+            else if Char.equal c1 '0'
             then (
               match previous_chunk_type with
               | `Not_a_number | `Number `Leading_zeros -> `Number `Leading_zeros
@@ -69,8 +67,8 @@ module T = struct
           in
           loop t1 t2 (i + 1) ~previous_chunk_type:this_chunk_type
         | char_compare ->
-          let d1 = Char.is_digit c1 in
-          let d2 = Char.is_digit c2 in
+          let d1 = Char.Ascii.is_digit c1 in
+          let d2 = Char.Ascii.is_digit c2 in
           (match d1, d2, previous_chunk_type with
            | false, false, _ ->
              (* two non-numeric chars, just use their comparison *)

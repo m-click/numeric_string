@@ -1,6 +1,5 @@
 (library
  (name numeric_string)
  (public_name numeric_string)
- (libraries base)
  (preprocess
   (pps ppx_jane -compare-require-explicit-locality)))
